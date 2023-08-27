@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import notfound from './no-data.png';
+import Swal from 'sweetalert2'
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -11,7 +13,12 @@ const FileUpload = () => {
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
-      alert("Please select a file first.");
+      // alert("Please select a file first.");
+      Swal.fire(
+        'Error',
+        'Please select a file first.',
+        'error'
+      )
       return;
     }
 
@@ -47,8 +54,18 @@ const FileUpload = () => {
 
       setUploadedData((prevData) => [...prevData, displayText]);
       setSelectedFile(null);
+      Swal.fire(
+        'Success',
+        "File successfully uploaded",
+        'success'
+      )
     } catch (error) {
       console.error("Error uploading file:", error);
+      Swal.fire(
+        'Error uploading file:',
+        error,
+        'error'
+      )
     }
   };
 
@@ -83,18 +100,26 @@ const FileUpload = () => {
   <br/><br/><br/>
     <div className="cont container">
       <h1>Secure file upload</h1>
-      <input className="form-control form-control-lg gg" type="file" onChange={handleFileChange} />
+      <input className="form-control form-control-md gg" type="file" onChange={handleFileChange} />
       <button className="btn btn-md btn-success" onClick={handleFileUpload}>Upload File</button>
       <div>
-        <h3>Uploaded Data:</h3>
+        
         <div>
+          { uploadedData.length === 0 ?
+            <>
+              <img src={notfound} alt="No files uploaded" width={250}/>
+              <h3>No files uploaded!</h3>
+            </>
+          : <>
+          <h3>Uploaded Files</h3>
+          </>}
           {uploadedData.map((data, index) => (
             <>
             <div class="card" styles="width: 100%;">
               <div class="card-body">
-                <h5 class="card-title">{index+1}. {data}</h5>
+                <h5 class="card-title"><strong>{index+1}. {data}</strong></h5>
                 <p class="card-text"></p>
-                <a href={`https://gateway.pinata.cloud/ipfs/${data}`} class="btn btn-success" target="_">view</a>
+                <a href={`https://gateway.pinata.cloud/ipfs/${data}`} class="btn btn-success" target="_">View</a>
               </div>
             
           </div>
