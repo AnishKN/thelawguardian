@@ -1,0 +1,11 @@
+.cont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.gg{
+    width: 400px;
+    margin: 50px;
+}
